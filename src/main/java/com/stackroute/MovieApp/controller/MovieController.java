@@ -1,6 +1,8 @@
 package com.stackroute.MovieApp.controller;
 
 import com.stackroute.MovieApp.domain.Movie;
+import com.stackroute.MovieApp.exceptions.MovieAlreadyExistsException;
+import com.stackroute.MovieApp.exceptions.MovieNotFoundException;
 import com.stackroute.MovieApp.repository.MovieRepository;
 import com.stackroute.MovieApp.service.MovieService;
 import org.springframework.http.HttpStatus;
@@ -23,14 +25,10 @@ public class MovieController {
 
 
     @PostMapping("movie")
-    public ResponseEntity<?> saveMovie(@RequestBody Movie movie){
+    public ResponseEntity<?> saveMovie(@RequestBody Movie movie) throws MovieAlreadyExistsException {
         ResponseEntity responseEntity;
-        try {
-            movieService.saveMovie(movie);
-            responseEntity = new ResponseEntity<String>("Successfully Created", HttpStatus.CREATED);
-        }catch (Exception e){
-            responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
-        }
+        movieService.saveMovie(movie);
+        responseEntity = new ResponseEntity<String>("Successfully Created", HttpStatus.CREATED);
         return responseEntity;
     }
 
@@ -72,13 +70,9 @@ public class MovieController {
     }
 
     @GetMapping("movie/moviename={name}")
-    public ResponseEntity<?> getMovieByName(@PathVariable String name){
+    public ResponseEntity<?> getMovieByName(@PathVariable String name) throws MovieNotFoundException {
         ResponseEntity responseEntity;
-        try {
-            responseEntity = new ResponseEntity<List<Movie>>(movieService.findByName(name), HttpStatus.OK);
-        }catch (Exception e){
-            responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
-        }
+        responseEntity = new ResponseEntity<List<Movie>>(movieService.findByName(name), HttpStatus.OK);
         return responseEntity;
     }
 
