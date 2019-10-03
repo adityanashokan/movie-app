@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public interface MovieService {
-    public Movie saveMovie(Movie movie) throws UserAlreadyExistsException;
+    public Movie saveMovie(Movie movie);
 
     public void deleteMovie(int id);
 

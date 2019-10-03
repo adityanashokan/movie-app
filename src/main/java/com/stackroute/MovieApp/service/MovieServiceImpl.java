@@ -19,14 +19,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie saveMovie(Movie movie) throws UserAlreadyExistsException {
-        if(movieRepository.existsById(movie.getMovieId())){
-            throw new UserAlreadyExistsException("User Already Exists");
-        }
+    public Movie saveMovie(Movie movie){
         Movie savedMovie = movieRepository.save(movie);
-        if(savedMovie == null){
-            throw new UserAlreadyExistsException("User Already Exists");
-        }
         return savedMovie;
     }
 
