@@ -6,12 +6,13 @@ import com.stackroute.MovieApp.exceptions.MovieNotFoundException;
 import com.stackroute.MovieApp.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Qualifier("batman")
+@Profile("service2")
 public class MovieServiceImpl2 implements MovieService {
 
     MovieRepository movieRepository;
@@ -33,11 +34,14 @@ public class MovieServiceImpl2 implements MovieService {
 
     @Override
     public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
+        return null;
     }
 
     @Override
     public List<Movie> findByName(String name) throws MovieNotFoundException {
-        return null;
+        if(movieRepository.findByName(name).isEmpty()){
+            throw new MovieNotFoundException("Movie Not Found");
+        }
+        return movieRepository.findByName(name);
     }
 }
