@@ -17,7 +17,6 @@ public class ApplicationStartupRunner implements CommandLineRunner {
     }
     @Override
     public void run(String... args) throws Exception {
-        movie = new Movie(3,"Three","Synopsis of the movie","tagline of the movie",9.99);
-        movieRepository.save(movie);
+
     }
 }
