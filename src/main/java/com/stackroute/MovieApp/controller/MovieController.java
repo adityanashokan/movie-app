@@ -5,6 +5,8 @@ import com.stackroute.MovieApp.exceptions.MovieAlreadyExistsException;
 import com.stackroute.MovieApp.exceptions.MovieNotFoundException;
 import com.stackroute.MovieApp.repository.MovieRepository;
 import com.stackroute.MovieApp.service.MovieService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,11 @@ import java.util.Optional;
 @RequestMapping(value = "api/v1")
 public class MovieController {
 
+    @Autowired
     MovieService movieService;
+    @Autowired
+    @Qualifier("batman")
+    MovieService movieService2;
     MovieRepository movieRepository;
 
     public MovieController(MovieService movieService) {
@@ -62,7 +68,7 @@ public class MovieController {
     public ResponseEntity<?> getAllMovies(){
         ResponseEntity responseEntity;
         try {
-            responseEntity = new ResponseEntity<List<Movie>>(movieService.getAllMovies(), HttpStatus.OK);
+            responseEntity = new ResponseEntity<List<Movie>>(movieService2.getAllMovies(), HttpStatus.OK);
         }catch (Exception e){
             responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
         }
