@@ -35,8 +35,16 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void deleteMovie(int id) {
-         movieRepository.deleteById(id);
+    public Boolean deleteMovie(int id) throws MovieNotFoundException{
+      try{
+          movieRepository.deleteById(id);
+          if(!movieRepository.existsById(id))
+              return true;
+          else
+              return false;
+      }catch (Exception e){
+          throw new MovieNotFoundException("Movie Not Found for Deleting");
+      }
     }
 
     @Override
@@ -45,9 +53,27 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> findByName(String name) throws MovieNotFoundException {
-       return null;
+    public Movie getMovieById(int id) {
+        return  movieRepository.findById(id).get();
     }
+
+    @Override
+    public Movie updateMovie(int id, Movie movie) throws MovieNotFoundException{
+        try {
+            movieRepository.deleteById(id);
+            movieRepository.save(movie);
+            return movie;
+        }catch (Exception e){
+            throw new MovieNotFoundException("Movie Not Found");
+        }
+    }
+
+    @Override
+    public List<Movie> findByName(String name) throws MovieNotFoundException {
+        if(movieRepository.findByName(name).isEmpty()){
+            throw new MovieNotFoundException("Movie Not Found");
+        }
+        return movieRepository.findByName(name);    }
 
 
 }
