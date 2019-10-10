@@ -20,4 +20,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleNotFoundException(HttpServletRequest request, Exception ex){
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(DatabaseConnectivityException.class)
+    public ResponseEntity<?> handleDatabaseConnectivityException(HttpServletRequest request, Exception ex){
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
 }
