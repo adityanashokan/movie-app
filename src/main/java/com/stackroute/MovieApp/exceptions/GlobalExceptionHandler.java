@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,13 +23,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(DatabaseConnectivityException.class)
-    public ResponseEntity<?> handleDatabaseConnectivityException(HttpServletRequest request, Exception ex){
-        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
-    }
 
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity handleException(Exception ex){
-        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody ResponseEntity<?> SQLErrorHandler(Exception e, HttpServletRequest req){
+        return new ResponseEntity<String>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
