@@ -18,11 +18,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MovieNotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(HttpServletRequest request, Exception ex){
-        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DatabaseConnectivityException.class)
     public ResponseEntity<?> handleDatabaseConnectivityException(HttpServletRequest request, Exception ex){
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity handleException(Exception ex){
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
